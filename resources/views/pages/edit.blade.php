@@ -46,15 +46,15 @@
             <div class="col-sm-9">
                 <div class="input-group">
                     <input type="text" class="form-control @error('interest_rate') is-invalid @enderror" name="interest_rate" id="interest_rate"
-                        placeholder="Interest Rate" aria-label="Interest Rate" value="{{ $loan_header->interest_rate }}">
+                        placeholder="Interest Rate" aria-label="Interest Rate" value="{{ number_format($loan_header->interest_rate, 2) }}">
                     <div class="input-group-append">
                         <span class="input-group-text" id="interest_rate-span">%</span>
                     </div>
                     @error('interest_rate')
-                <div class="invalid-feedback">
-                    Float with two decimal places and range between 1-36%
-                </div>
-                @enderror
+                    <div class="invalid-feedback">
+                        Float with two decimal places and range between 1-36%
+                    </div>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
                 <input type="month" class="form-control @error('start_date') is-invalid @enderror" name="start_date" id="start_date" value="{{ date("Y-m", strtotime($loan_header->start_date)) }}">               
                 @error('start_date')
                 <div class="invalid-feedback">
-                    Float with two decimal places and range between 1-36%
+                    Range between Jan 2017 - Dec 2050
                 </div>
                  @enderror
             </div>

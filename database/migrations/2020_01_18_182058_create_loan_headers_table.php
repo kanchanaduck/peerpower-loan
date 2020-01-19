@@ -19,7 +19,6 @@ class CreateLoanHeadersTable extends Migration
             $table->integer('loan_term');
             $table->decimal('interest_rate', 21, 6);
             $table->date('start_date');
-            $table->enum('header_status', ['active', 'deleted']);
             $table->string('created_by');
             $table->string('updated_by');
             $table->timestamps();

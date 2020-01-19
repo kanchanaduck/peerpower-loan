@@ -5,7 +5,6 @@
 @section('content')
     <h2>All Loans</h2>
     <a href="create-loan" class="btn btn-primary">Add New Loan</a>
-    <button type="button" class="btn btn-info">Info</button>
     <table class="table table-striped table-hover mt-2">
         <thead>
             <tr class="table-light">

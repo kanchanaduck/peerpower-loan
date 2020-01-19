@@ -11,7 +11,7 @@
             <label for="loan_amount" class="col-sm-3 col-form-label">Loan Amount</label>
             <div class="col-sm-9">
                 <div class="input-group">
-                    <input type="text" autofocus class="form-control @error('loan_amount') is-invalid @enderror" name="loan_amount" id="loan_amount" placeholder="Loan Amount" aria-label="Loan Amount">
+                    <input type="text" class="form-control @error('loan_amount') is-invalid @enderror" name="loan_amount" id="loan_amount" placeholder="Loan Amount" aria-label="Loan Amount" value="{{old('loan_amount')}}">
                     <div class="input-group-append">
                         <span class="input-group-text" id="loan_amount-span">฿</span>
                     </div>
@@ -28,7 +28,7 @@
             <div class="col-sm-9">
                 <div class="input-group">
                     <input type="text" class="form-control @error('loan_term') is-invalid @enderror" name="loan_term" id="loan_term" placeholder="Loan Term"
-                        aria-label="Loan Term">
+                        aria-label="Loan Term" value="{{old('loan_term')}}">
                     <div class="input-group-append">
                         <span class="input-group-text" id="loan_term-span">Years</span>
                     </div>
@@ -45,7 +45,7 @@
             <div class="col-sm-9">
                 <div class="input-group">
                     <input type="text" class="form-control @error('interest_rate') is-invalid @enderror" name="interest_rate" id="interest_rate"
-                        placeholder="Interest Rate" aria-label="Interest Rate">
+                        placeholder="Interest Rate" aria-label="Interest Rate" value="{{old('interest_rate')}}">
                     <div class="input-group-append">
                         <span class="input-group-text" id="interest_rate-span">%</span>
                     </div>
@@ -60,10 +60,10 @@
         <div class="form-group row">
             <label for="inputEmail3" class="col-sm-3 col-form-label">Start Date</label>
             <div class="col-sm-9">
-                <input type="month" class="form-control @error('start_date') is-invalid @enderror" name="start_date" id="start_date">
+                <input type="month" class="form-control @error('start_date') is-invalid @enderror" name="start_date" id="start_date" value="{{old('start_date')}}">
                 @error('start_date')
                 <div class="invalid-feedback">
-                    Float with two decimal places and range between 1-36%
+                    Range between Jan 2017 - Dec 2050
                 </div>
                  @enderror
             </div>

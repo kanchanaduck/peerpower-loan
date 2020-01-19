@@ -15,18 +15,22 @@ class CreateLoanLinesTable extends Migration
     {
         Schema::create('loan_lines', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('loan_header_id')->references('id')->on('loan_headers');
+            $table->unsignedBigInteger('loan_header_id');
             $table->integer('line_no');
             $table->date('date');
             $table->decimal('payment_amount', 21, 6);
             $table->decimal('principal', 21, 6);
             $table->decimal('interest', 21, 6);
             $table->decimal('balance', 21, 6);
-            $table->enum('line_status', ['active', 'deleted']);
             $table->string('created_by');
             $table->string('updated_by');
             $table->timestamps();
+            $table->foreign('loan_header_id')
+                    ->references('id')->on('loan_headers')
+                    ->onDelete('cascade');
         });
+
+
     }
 
     /**

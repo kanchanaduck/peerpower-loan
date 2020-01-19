@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\LoanHeader;
 use App\LoanLine;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LoanStore;
 use DB;
 
 class LoanController extends Controller
@@ -22,7 +24,7 @@ class LoanController extends Controller
      */
     public function index()
     {
-        $loan_header = LoanHeader::where(['header_status'=>'active'])->get();
+        $loan_header = LoanHeader::all();
         return view('pages.home', ['loan_header' => $loan_header]);
     }
 
@@ -42,14 +44,9 @@ class LoanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LoanStore $request)
     {
-        $validatedData = $request->validate([
-            'loan_amount' => 'required|integer',
-            'loan_term' => 'required|min:1|max:50',
-            'interest_rate' => 'required|min:1|max:36}digits_between:0,2',
-            'start_date' => 'required'
-        ]);
+        $validatedData = $request->validated();
 
         $p = $request->loan_amount;
         $r = $request->interest_rate;
@@ -61,7 +58,6 @@ class LoanController extends Controller
             'loan_term' => $y,
             'interest_rate' => $r,
             'start_date' => $start_date,
-            'header_status' => 'active',
             'created_by' => Auth::user()->name,
             'updated_by' => Auth::user()->name
         ]);
@@ -83,7 +79,6 @@ class LoanController extends Controller
                 'principal' => $principal,
                 'interest' => $interest,
                 'balance' => $balance,
-                'line_status' => 'active',
                 'created_by' => Auth::user()->name,
                 'updated_by' => Auth::user()->name
             ]);
@@ -100,7 +95,7 @@ class LoanController extends Controller
     public function show($id)
     {
         $loan_header = LoanHeader::findOrFail($id);
-        $loan_line = LoanLine::where(['loan_header_id'=>$id, 'line_status'=>'active'])->get();
+        $loan_line = LoanLine::where(['loan_header_id'=>$id])->get();
         return view('pages.show', ['loan_header' => $loan_header, 'loan_line' => $loan_line,]);
     }
 
@@ -123,14 +118,9 @@ class LoanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(LoanStore $request, $id)
     {
-        $validatedData = $request->validate([
-            'loan_amount' => 'required|integer',
-            'loan_term' => 'required|min:1|max:50',
-            'interest_rate' => 'required|min:1|max:36}digits_between:0,2',
-            'start_date' => 'required'
-        ]);
+        $validatedData = $request->validated();
 
         $p = $request->loan_amount;
         $r = $request->interest_rate;
@@ -145,8 +135,7 @@ class LoanController extends Controller
         $header->updated_by = Auth::user()->name;
         $header->save();
 
-        $line = LoanLine::where('loan_header_id', $id)
-                    ->update(['line_status' => 'deleted']);
+        $line = LoanLine::where('loan_header_id', $id)->delete();
 
         $pmt = ($p * ( ($r/100) /12 ) )/ ( 1 - pow(1 + (($r/100)/12),(-12*$y)));
         $balance = $p;
@@ -164,7 +153,6 @@ class LoanController extends Controller
                 'principal' => $principal,
                 'interest' => $interest,
                 'balance' => $balance,
-                'line_status' => 'active',
                 'created_by' => Auth::user()->name,
                 'updated_by' => Auth::user()->name
             ]);
@@ -181,11 +169,8 @@ class LoanController extends Controller
     public function destroy($id)
     {
         $header = LoanHeader::findOrFail($id);
-        $header->header_status = 'deleted';
-        $header->updated_by = Auth::user()->name;
-        $header->save();        
+        $header->delete();    
         
-        $line = LoanLine::where('loan_header_id', $id)->update(['line_status' => 'deleted']);
         return redirect()->route('loan')->with('alert', 'The loan has been deleted successfully.');;
     }
 }
