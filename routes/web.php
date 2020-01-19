@@ -12,14 +12,12 @@
 */
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', 'HomeController@index')->name('home');
 
 
 Auth::routes();
-// Route::get('home', 'HomeController@index')->name('home');
-Route::get('/', 'LoanController@index')->name('loan');
+
+Route::get('loan', 'LoanController@index')->name('loan');
 Route::get('create-loan', 'LoanController@create')->name('loan.create');
 Route::post('store-loan', 'LoanController@store')->name('loan.store');
 Route::get('detail-loan/{id}', 'LoanController@show')->name('loan.show');

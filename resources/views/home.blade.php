@@ -14,7 +14,9 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <p> You are logged in! </p>
+                    <p> <a href="{{ route('loan') }}">Click here to loan system..</a> </p>
+
                 </div>
             </div>
         </div>
