@@ -46,6 +46,11 @@ class LoanController extends Controller
      */
     public function store(LoanStore $request)
     {
+
+        $request->merge([
+            'start_date' => $request->start_date.'-01',
+        ]);
+
         $validatedData = $request->validated();
 
         $p = $request->loan_amount;
